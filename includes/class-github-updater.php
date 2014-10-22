@@ -225,15 +225,36 @@ class GitHub_Updater {
 	* @return array
 	*/
 	private function multisite_get_themes() {
-		$themes     = array();
-		$theme_dirs = scandir( get_theme_root() );
-		$theme_dirs = array_diff( $theme_dirs, array( '.', '..', '.DS_Store', 'index.php' ) );
+		global $wp_theme_directories;
 
-		foreach ( (array) $theme_dirs as $theme_dir ) {
-			$themes[] = wp_get_theme( $theme_dir );
+		$_theme_roots = array();
+
+		$_theme_root = get_theme_root();
+		$themes     = array();
+
+		if( isset( $wp_theme_directories ) ) {
+			$_theme_roots = $wp_theme_directories;
+		}
+
+		// Add our theme root if not already covered by $wp_theme_directories.
+		if( $_theme_root && !in_array( $_theme_root, $_theme_roots ) ) {
+			array_push( $_theme_roots, $_theme_root );
+		}
+
+		// Cycle through and find potential theme direcotires
+		foreach( (array) $_theme_roots as $_root ) {
+
+			$theme_dirs = scandir( $_root );
+			$theme_dirs = array_diff( $theme_dirs, array( '.', '..', '.DS_Store', 'index.php' ) );
+
+			foreach ( (array) $theme_dirs as $theme_dir ) {
+				$themes[] = wp_get_theme( $theme_dir );
+			}
+
 		}
 
 		return $themes;
+
 	}
 
 	/**
