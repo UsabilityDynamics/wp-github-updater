@@ -424,7 +424,7 @@ class GitHub_Updater {
 			return $source;
 		}
 
-		$corrected_source = apply_filters( 'github-updater:corrected_source', trailingslashit( $remote_source ) . trailingslashit( $repo ), array(
+		$corrected_source = apply_filters( 'github_updater:corrected_source', trailingslashit( $remote_source ) . trailingslashit( $repo ), array(
 			'repo' => $repo,
 			'remote_source' => $remote_source,
 			'upgrader' => $upgrader
@@ -519,9 +519,13 @@ class GitHub_Updater {
 	 * @return bool or variable
 	 */
 	protected function get_changelog_filename( $type ) {
-		$changelogs = array( 'CHANGES.md', 'CHANGELOG.md' );
 
-		foreach ( $changelogs as $changes ) {
+		$changelogs = apply_filters( 'github_updater:changelogs', array( 'CHANGES.md', 'CHANGELOG.md' ), array(
+			'type' => $type,
+			'this' => $this
+		));
+
+		foreach ( (array) $changelogs as $changes ) {
 			if ( file_exists( $this->$type->local_path . $changes ) ) {
 				return $changes;
 			}
