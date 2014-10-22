@@ -152,6 +152,10 @@ Alternatively, you may set the token as a constant, in wp-config.php:
 define( 'GITHUB_UPDATER_TOKEN', 'my-secret-token' ):
 ```
 
+### WordPress Hooks
+
+* github-updater:corrected_source - Filter can be used to override the directory name of an updated plugin/theme.
+
 ### Bitbucket Private Repositories
 
 The header should be in the following format: `Bitbucket Plugin URI: https://<user>:<password>@bitbucket.org/<owner>/<repo>` or `Bitbucket Theme URI: https://<user>:<password>@bitbucket.org/<owner>/<repo>`
